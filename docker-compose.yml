@@ -1,0 +1,24 @@
+version: '3.9'
+
+services:
+  minio:
+    image: quay.io/minio/minio:latest
+    container_name: s3-minio
+    environment:
+      MINIO_ROOT_USER: admin123
+      MINIO_ROOT_PASSWORD: admin123
+    command: server --console-address ":9090" /data
+    ports:
+      - 9000:9000
+      - 9090:9090
+  mc:
+    image: minio/mc
+    depends_on:
+      - minio
+    entrypoint: >
+      /bin/sh -c "
+      /usr/bin/mc alias set s3-minio http://minio:9000 admin123 admin123;
+      /usr/bin/mc mb s3-minio/sample-bucket --region=ap-northeast-1;
+      /usr/bin/mc policy set public s3-minio/sample-bucket;
+      exit 0;
+      "
