@@ -8,6 +8,8 @@ services:
       MINIO_ROOT_USER: admin123
       MINIO_ROOT_PASSWORD: admin123
     command: server --console-address ":9090" /data
+    volumes:
+      - ./minio/data:/data
     ports:
       - 9000:9000
       - 9090:9090
@@ -22,25 +24,3 @@ services:
       /usr/bin/mc policy set public s3-minio/sample-bucket;
       exit 0;
       "
-
-docker run \
-   -p 9000:9000 \
-   -p 9090:9090 \
-   --user $(id -u):$(id -g) \
-   --name minio1 \
-   -e "MINIO_ROOT_USER=admin123" \
-   -e "MINIO_ROOT_PASSWORD=admin123" \
-   -v ./minio/data:/data \
-   quay.io/minio/minio server /data --console-address ":9090"
-
-docker run \
-   -p 9000:9000 \
-   -p 9090:9090 \
-   --user $(id -u):$(id -g) \
-   --name minio1 \
-   -e "MINIO_ROOT_USER=ROOTUSER" \
-   -e "MINIO_ROOT_PASSWORD=CHANGEME123" \
-   -v ${HOME}/Github/batch_sample/minio/data:/data \
-   minio/minio:latest server /data --console-address ":9090"
-docker: Error: remote trust data does not exist for quay.io/minio/minio: quay.io does not have trust data for quay.io/minio/minio.
-See 'docker run --help'.
