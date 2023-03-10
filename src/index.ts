@@ -1,5 +1,5 @@
 import { cdate } from 'cdate';
-import { s3Helper } from './helpers/s3-helper.js';
+import { s3Helper } from './helpers/s3-helper';
 
 (async () => {
   //JSONデータの生成
