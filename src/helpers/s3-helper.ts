@@ -7,11 +7,10 @@ import {
   PutObjectCommand,
   S3Client,
 } from '@aws-sdk/client-s3';
-import { fromIni } from '@aws-sdk/credential-providers';
+import { defaultProvider } from '@aws-sdk/credential-provider-node';
 
 const env = load({
   BUCKET_NAME: String,
-  AWS_PROFILE: String,
   S3_ENDPOINT: String,
 });
 
@@ -20,8 +19,9 @@ class S3Helper {
 
   constructor() {
     this.s3Client = new S3Client({
-      credentials: fromIni({ profile: env.AWS_PROFILE }),
+      credentials: defaultProvider(),
       endpoint: env.S3_ENDPOINT,
+      region: 'ap-northeast-1',
     });
   }
 

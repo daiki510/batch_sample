@@ -9,6 +9,7 @@ import { s3Helper } from './helpers/s3-helper';
     date: currentDate,
   };
   const json = JSON.stringify(data);
+  console.debug(json);
 
   //S3アップロード
   await s3Helper.uploadObject(json, currentDate);
